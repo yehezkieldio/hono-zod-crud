@@ -1,0 +1,22 @@
+{
+    "name": "hono-openapi",
+    "main": "src/main.ts",
+    "scripts": {
+        "dev": "bun run --hot src/main.ts"
+    },
+    "dependencies": {
+        "@hono/zod-openapi": "^0.17.0",
+        "@prisma/client": "^5.22.0",
+        "@scalar/hono-api-reference": "^0.5.159",
+        "hono": "^4.6.10",
+        "zod": "^3.23.8",
+        "zod-prisma-types": "^3.1.8"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
+        "@total-typescript/ts-reset": "^0.6.1",
+        "@types/bun": "latest",
+        "prisma": "^5.22.0",
+        "typescript": "^5.7.2"
+    }
+}
