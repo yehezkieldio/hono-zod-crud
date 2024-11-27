@@ -183,3 +183,7 @@ docker/development/data
 # Turbo
 
 .turbo
+
+# Others
+
+data
