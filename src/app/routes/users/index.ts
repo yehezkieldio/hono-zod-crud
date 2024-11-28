@@ -1,5 +1,5 @@
 import { createRoute } from "@hono/zod-openapi";
-import { ParamsSchema, UserSchema, UsersSchema } from "#/app/routes/users/schema";
+import { CreateUserSchema, ParamsSchema, UserSchema, UsersSchema } from "#/app/routes/users/schema";
 import { ErrorSchema } from "#/shared/schema";
 
 export const getUsers = createRoute({
@@ -21,5 +21,22 @@ export const getUser = createRoute({
         200: { content: { "application/json": { schema: UserSchema } }, description: "Retrieve the user" },
         400: { content: { "application/json": { schema: ErrorSchema } }, description: "Bad Request" },
         404: { content: { "application/json": { schema: ErrorSchema } }, description: "User not found" },
+    },
+});
+
+export const createUser = createRoute({
+    method: "post",
+    path: "/",
+    request: {
+        body: {
+            content: { "application/json": { schema: CreateUserSchema } },
+            required: true,
+            description: "User to create",
+        },
+    },
+    responses: {
+        201: { content: { "application/json": { schema: UserSchema } }, description: "Create a user" },
+        400: { content: { "application/json": { schema: ErrorSchema } }, description: "Bad Request" },
+        409: { content: { "application/json": { schema: ErrorSchema } }, description: "User already exists" },
     },
 });

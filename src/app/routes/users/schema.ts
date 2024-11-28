@@ -18,3 +18,10 @@ export const UserSchema = z
     .openapi("User");
 
 export const UsersSchema = z.array(UserSchema).openapi("Users");
+
+export const CreateUserSchema = z.object({
+    email: z.string().email(),
+    name: z.string().nullable(),
+    password: z.string().min(8),
+    role: RoleSchema,
+});

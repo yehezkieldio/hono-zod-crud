@@ -1,10 +1,17 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { getUser, getUsers } from "#/app/routes/users";
+import { createUser, getUser, getUsers } from "#/app/routes/users";
 import prisma from "#/shared/prisma";
 
 const usersApp = new OpenAPIHono()
     .openapi(getUsers, async (c) => {
-        const users = await prisma.user.findMany();
+        const users = await prisma.user.findMany({
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                role: true,
+            },
+        });
 
         return c.json(users, 200);
     })
@@ -16,6 +23,12 @@ const usersApp = new OpenAPIHono()
             const user = await prisma.user.findUnique({
                 where: {
                     id,
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                    role: true,
                 },
             });
 
@@ -30,6 +43,55 @@ const usersApp = new OpenAPIHono()
             }
 
             return c.json(user, 200);
+        },
+        (result, c) => {
+            if (!result.success) {
+                return c.json(
+                    {
+                        code: 400,
+                        message: "Validation Error",
+                    },
+                    400,
+                );
+            }
+        },
+    )
+    .openapi(
+        createUser,
+        async (c) => {
+            const data = c.req.valid("json");
+
+            const existingUser = await prisma.user.findUnique({
+                where: {
+                    email: data.email,
+                },
+            });
+            if (existingUser) {
+                return c.json(
+                    {
+                        code: 409,
+                        message: "User already exists",
+                    },
+                    409,
+                );
+            }
+
+            const user = await prisma.user.create({
+                data: {
+                    email: data.email,
+                    name: data.name,
+                    role: data.role,
+                    password: await Bun.password.hash(data.password),
+                },
+                select: {
+                    id: true,
+                    email: true,
+                    name: true,
+                    role: true,
+                },
+            });
+
+            return c.json(user, 201);
         },
         (result, c) => {
             if (!result.success) {

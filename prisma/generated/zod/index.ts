@@ -12,7 +12,7 @@ import type { Prisma } from '@prisma/client';
 
 export const TransactionIsolationLevelSchema = z.enum(['ReadUncommitted','ReadCommitted','RepeatableRead','Serializable']);
 
-export const UserScalarFieldEnumSchema = z.enum(['id','email','name','role']);
+export const UserScalarFieldEnumSchema = z.enum(['id','email','name','password','role']);
 
 export const SortOrderSchema = z.enum(['asc','desc']);
 
@@ -37,6 +37,7 @@ export const UserSchema = z.object({
   id: z.string().cuid(),
   email: z.string(),
   name: z.string().nullable(),
+  password: z.string(),
 })
 
 export type User = z.infer<typeof UserSchema>
@@ -52,6 +53,7 @@ export const UserSelectSchema: z.ZodType<Prisma.UserSelect> = z.object({
   id: z.boolean().optional(),
   email: z.boolean().optional(),
   name: z.boolean().optional(),
+  password: z.boolean().optional(),
   role: z.boolean().optional(),
 }).strict()
 
@@ -67,6 +69,7 @@ export const UserWhereInputSchema: z.ZodType<Prisma.UserWhereInput> = z.object({
   id: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   role: z.union([ z.lazy(() => EnumRoleFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
 }).strict();
 
@@ -74,6 +77,7 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   name: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -96,6 +100,7 @@ export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> 
   OR: z.lazy(() => UserWhereInputSchema).array().optional(),
   NOT: z.union([ z.lazy(() => UserWhereInputSchema),z.lazy(() => UserWhereInputSchema).array() ]).optional(),
   name: z.union([ z.lazy(() => StringNullableFilterSchema),z.string() ]).optional().nullable(),
+  password: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   role: z.union([ z.lazy(() => EnumRoleFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
 }).strict());
 
@@ -103,6 +108,7 @@ export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderBy
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   name: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional(),
   _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
   _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
@@ -116,6 +122,7 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.UserScal
   id: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   email: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   name: z.union([ z.lazy(() => StringNullableWithAggregatesFilterSchema),z.string() ]).optional().nullable(),
+  password: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   role: z.union([ z.lazy(() => EnumRoleWithAggregatesFilterSchema),z.lazy(() => RoleSchema) ]).optional(),
 }).strict();
 
@@ -123,6 +130,7 @@ export const UserCreateInputSchema: z.ZodType<Prisma.UserCreateInput> = z.object
   id: z.string().cuid().optional(),
   email: z.string(),
   name: z.string().optional().nullable(),
+  password: z.string(),
   role: z.lazy(() => RoleSchema).optional()
 }).strict();
 
@@ -130,6 +138,7 @@ export const UserUncheckedCreateInputSchema: z.ZodType<Prisma.UserUncheckedCreat
   id: z.string().cuid().optional(),
   email: z.string(),
   name: z.string().optional().nullable(),
+  password: z.string(),
   role: z.lazy(() => RoleSchema).optional()
 }).strict();
 
@@ -137,6 +146,7 @@ export const UserUpdateInputSchema: z.ZodType<Prisma.UserUpdateInput> = z.object
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -144,6 +154,7 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<Prisma.UserUncheckedUpdat
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -151,6 +162,7 @@ export const UserCreateManyInputSchema: z.ZodType<Prisma.UserCreateManyInput> = 
   id: z.string().cuid().optional(),
   email: z.string(),
   name: z.string().optional().nullable(),
+  password: z.string(),
   role: z.lazy(() => RoleSchema).optional()
 }).strict();
 
@@ -158,6 +170,7 @@ export const UserUpdateManyMutationInputSchema: z.ZodType<Prisma.UserUpdateManyM
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -165,6 +178,7 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<Prisma.UserUncheckedU
   id: z.union([ z.string().cuid(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   email: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   name: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+  password: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   role: z.union([ z.lazy(() => RoleSchema),z.lazy(() => EnumRoleFieldUpdateOperationsInputSchema) ]).optional(),
 }).strict();
 
@@ -214,6 +228,7 @@ export const UserCountOrderByAggregateInputSchema: z.ZodType<Prisma.UserCountOrd
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -221,6 +236,7 @@ export const UserMaxOrderByAggregateInputSchema: z.ZodType<Prisma.UserMaxOrderBy
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
@@ -228,6 +244,7 @@ export const UserMinOrderByAggregateInputSchema: z.ZodType<Prisma.UserMinOrderBy
   id: z.lazy(() => SortOrderSchema).optional(),
   email: z.lazy(() => SortOrderSchema).optional(),
   name: z.lazy(() => SortOrderSchema).optional(),
+  password: z.lazy(() => SortOrderSchema).optional(),
   role: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
