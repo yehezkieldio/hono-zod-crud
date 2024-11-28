@@ -1,5 +1,5 @@
 import { createRoute } from "@hono/zod-openapi";
-import { CreateUserSchema, ParamsSchema, UserSchema, UsersSchema } from "#/app/routes/users/schema";
+import { CreateUserSchema, ParamsSchema, UpdateUserSchema, UserSchema, UsersSchema } from "#/app/routes/users/schema";
 import { ErrorSchema } from "#/shared/schema";
 
 export const getUsers = createRoute({
@@ -38,5 +38,23 @@ export const createUser = createRoute({
         201: { content: { "application/json": { schema: UserSchema } }, description: "Create a user" },
         400: { content: { "application/json": { schema: ErrorSchema } }, description: "Bad Request" },
         409: { content: { "application/json": { schema: ErrorSchema } }, description: "User already exists" },
+    },
+});
+
+export const updateUser = createRoute({
+    method: "patch",
+    path: "/{id}",
+    request: {
+        params: ParamsSchema,
+        body: {
+            content: { "application/json": { schema: UpdateUserSchema } },
+            required: true,
+            description: "User to update",
+        },
+    },
+    responses: {
+        200: { content: { "application/json": { schema: UserSchema } }, description: "Update a user" },
+        400: { content: { "application/json": { schema: ErrorSchema } }, description: "Bad Request" },
+        404: { content: { "application/json": { schema: ErrorSchema } }, description: "User not found" },
     },
 });
