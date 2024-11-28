@@ -58,3 +58,16 @@ export const updateUser = createRoute({
         404: { content: { "application/json": { schema: ErrorSchema } }, description: "User not found" },
     },
 });
+
+export const deleteUser = createRoute({
+    method: "delete",
+    path: "/{id}",
+    request: {
+        params: ParamsSchema,
+    },
+    responses: {
+        204: { description: "Delete a user" },
+        400: { content: { "application/json": { schema: ErrorSchema } }, description: "Bad Request" },
+        404: { content: { "application/json": { schema: ErrorSchema } }, description: "User not found" },
+    },
+});

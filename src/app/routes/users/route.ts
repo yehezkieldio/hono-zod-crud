@@ -1,5 +1,5 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
-import { createUser, getUser, getUsers, updateUser } from "#/app/routes/users";
+import { createUser, deleteUser, getUser, getUsers, updateUser } from "#/app/routes/users";
 import prisma from "#/shared/prisma";
 
 const usersApp = new OpenAPIHono()
@@ -143,6 +143,47 @@ const usersApp = new OpenAPIHono()
             });
 
             return c.json(user, 200);
+        },
+        (result, c) => {
+            if (!result.success) {
+                return c.json(
+                    {
+                        code: 400,
+                        message: "Validation Error",
+                    },
+                    400,
+                );
+            }
+        },
+    )
+    .openapi(
+        deleteUser,
+        async (c) => {
+            const { id } = c.req.valid("param");
+
+            const existingUser = await prisma.user.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!existingUser) {
+                return c.json(
+                    {
+                        code: 404,
+                        message: "User not found",
+                    },
+                    404,
+                );
+            }
+
+            await prisma.user.delete({
+                where: {
+                    id: id,
+                },
+            });
+
+            c.status(204);
+            return new Response();
         },
         (result, c) => {
             if (!result.success) {
